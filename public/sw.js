@@ -1,5 +1,10 @@
 self.addEventListener('install', event => {
   console.log('Installing SW', event);
+  event.waitUntil(
+    caches.open('static').then(cache => {
+      cache.add('/src/js/app.js');
+    })
+  );
 });
 
 self.addEventListener('activate', event => {
@@ -8,5 +13,9 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  console.log('Fetcing SW', event);
+  event.respondWith(
+    caches.match(event.request).then(response => {
+      return response ? response : fetch(event.request);
+    })
+  );
 });
