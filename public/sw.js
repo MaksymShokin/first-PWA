@@ -1,7 +1,10 @@
+const CACHE_STATIC_NAME = 'static-v4';
+const CACHE_DYNAMIC_NAME = 'dynamic-v2';
+
 self.addEventListener('install', event => {
-  console.log('Installing SW', event);
+  console.log('[Service worker] Installing SW', event);
   event.waitUntil(
-    caches.open('static').then(cache => {
+    caches.open(CACHE_STATIC_NAME).then(cache => {
       cache.addAll([
         '/',
         '/index.html',
@@ -20,7 +23,18 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('activate', event => {
-  console.log('Activating SW', event);
+  console.log('[Service worker] Activating SW', event);
+  event.waitUntil(
+    caches.keys().then(keyList => {
+      Promise.all(
+        keyList.map(key => {
+          if (key !== CACHE_STATIC_NAME && key !== CACHE_DYNAMIC_NAME) {
+            return caches.delete(key);
+          }
+        })
+      );
+    })
+  );
   return self.clients.claim();
 });
 
@@ -30,12 +44,14 @@ self.addEventListener('fetch', event => {
       if (response) {
         return response;
       } else {
-        return fetch(event.request).then(res => {
-          return caches.open('dynamic').then(cache => {
-            cache.put(event.request.url, res.clone());
-            return res;
-          });
-        });
+        return fetch(event.request)
+          .then(res => {
+            return caches.open(CACHE_DYNAMIC_NAME).then(cache => {
+              cache.put(event.request.url, res.clone());
+              return res;
+            });
+          })
+          .catch(err => {});
       }
     })
   );
