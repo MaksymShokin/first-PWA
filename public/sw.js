@@ -62,7 +62,6 @@ self.addEventListener('fetch', event => {
   );
 });
 
-
 // cache only
 // self.addEventListener('fetch', event => {
 //   event.respondWith(
@@ -74,5 +73,21 @@ self.addEventListener('fetch', event => {
 // self.addEventListener('fetch', event => {
 //   event.respondWith(
 //     fetch(event.request)
+//   );
+// });
+
+// network with cache fallback
+// self.addEventListener('fetch', event => {
+//   event.respondWith(
+//     fetch(event.request)
+//       .then(res => {
+//         return caches.open(CACHE_DYNAMIC_NAME).then(cache => {
+//           cache.put(event.request.url, res.clone());
+//           return res;
+//         });
+//       })
+//       .catch(err => {
+//         return caches.match(event.request);
+//       })
 //   );
 // });
