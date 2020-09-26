@@ -69,3 +69,10 @@ self.addEventListener('fetch', event => {
 //     caches.match(event.request)
 //   );
 // });
+
+// network only
+// self.addEventListener('fetch', event => {
+//   event.respondWith(
+//     fetch(event.request)
+//   );
+// });
