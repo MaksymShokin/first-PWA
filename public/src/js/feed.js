@@ -48,11 +48,12 @@ function createCard() {
   cardTitleTextElement.textContent = 'San Francisco Trip';
   cardTitle.appendChild(cardTitleTextElement);
   var cardSupportingText = document.createElement('div');
+  cardSupportingText.className = 'mdl-card__supporting-text';
+  cardSupportingText.textContent = 'In San Francisco';
+  cardSupportingText.style.textAlign = 'center';
+
 
   // caching on click 
-  // cardSupportingText.className = 'mdl-card__supporting-text';
-  // cardSupportingText.textContent = 'In San Francisco';
-  // cardSupportingText.style.textAlign = 'center';
   // var cardSaveButton = document.createElement('button');
   // cardSaveButton.textContent = 'Save';
   // cardSaveButton.addEventListener('click', event => {
@@ -65,8 +66,8 @@ function createCard() {
   //     });
   //   }
   // });
+  // cardSupportingText.appendChild(cardSaveButton);
   
-  cardSupportingText.appendChild(cardSaveButton);
   cardWrapper.appendChild(cardSupportingText);
   componentHandler.upgradeElement(cardWrapper);
   sharedMomentsArea.appendChild(cardWrapper);
